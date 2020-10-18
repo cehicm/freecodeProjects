@@ -73,41 +73,28 @@ const menu = [
   },
   {
     id: 10,
-    title: "quarantine buddy",
-    category: "shakes",
+    title: "Burger buddy",
+    category: "dinner",
     price: 45.99,
     img: "./images/item-10.jpeg",
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
 ];
-const sectionCenter = document.querySelector('.section-center'); // for classes
-const filterBtns = document.querySelectorAll('.filter-btn');
+// WHAT HAPPENS IF YOU ADD A NEW CATEGORY?
+// get only unique categories
+//iterate over categories return btns
+//make sure to select the btns when they're available.
 
+const sectionCenter = document.querySelector('.section-center'); // for classes
+const container = document.querySelector('.btn-container');
 
 // load items
 window.addEventListener('DOMContentLoaded', function(){ //callback function
   displayMenuItems(menu);
-  
+  displayMenuButtons();
 });
 
-// filtering the items
-filterBtns.forEach(function(btn){
-btn.addEventListener('click', function(e){
-  const category = e.currentTarget.dataset.id; //dataset: add to HTML (in the button) as data-EXAMPLE
-  const menuCategory = menu.filter(function(menuItem){
-    if(menuItem.category === category){
-      return menuItem;
-    }
-  });
-  if(category === 'all'){
-    displayMenuItems(menu);
-  }
-  else {
-    displayMenuItems(menuCategory);
-  }
- // console.log(menuCategory)
-});
-});
+
 
 function displayMenuItems(menuItems){
   let displayMenu = menuItems.map(function(item){ //map the array, map() can modify the array (modify the new data structure)
@@ -126,7 +113,39 @@ function displayMenuItems(menuItems){
 sectionCenter.innerHTML = displayMenu;
 }
 
-// WHAT HAPPENS IF YOU ADD A NEW CATEGORY?
-// get only unique categories
-//iterate over categories return btns
-//make sure to select the btns when they're available.
+
+function displayMenuButtons(){
+  const categories = menu.reduce(function(values,item){// values references the ['all'], item individual items
+  if(!values.includes(item.category)){
+    values.push(item.category);
+  }
+  return values;
+  },
+  ['all']);
+  const categoryBtns = categories.map(function(category){
+    return  ` <button class="filter-btn" type="button" data-id=${category}> ${category} </button>
+    `
+  }).join('');
+container.innerHTML = categoryBtns;
+const filterBtns = document.querySelectorAll('.filter-btn');
+// filtering the items
+filterBtns.forEach(function(btn){
+  btn.addEventListener('click', function(e){
+    const category = e.currentTarget.dataset.id; //dataset: add to HTML (in the button) as data-EXAMPLE
+    const menuCategory = menu.filter(function(menuItem){
+      if(menuItem.category === category){
+        return menuItem;
+      }
+    });
+    if(category === 'all'){
+      displayMenuItems(menu);
+    }
+    else {
+      displayMenuItems(menuCategory);
+    }
+   // console.log(menuCategory)
+  });
+  });
+}
+
+
