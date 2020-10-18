@@ -71,4 +71,62 @@ const menu = [
     img: "./images/item-9.jpeg",
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
+  {
+    id: 10,
+    title: "quarantine buddy",
+    category: "shakes",
+    price: 45.99,
+    img: "./images/item-10.jpeg",
+    desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
+  },
 ];
+const sectionCenter = document.querySelector('.section-center'); // for classes
+const filterBtns = document.querySelectorAll('.filter-btn');
+
+
+// load items
+window.addEventListener('DOMContentLoaded', function(){ //callback function
+  displayMenuItems(menu);
+  
+});
+
+// filtering the items
+filterBtns.forEach(function(btn){
+btn.addEventListener('click', function(e){
+  const category = e.currentTarget.dataset.id; //dataset: add to HTML (in the button) as data-EXAMPLE
+  const menuCategory = menu.filter(function(menuItem){
+    if(menuItem.category === category){
+      return menuItem;
+    }
+  });
+  if(category === 'all'){
+    displayMenuItems(menu);
+  }
+  else {
+    displayMenuItems(menuCategory);
+  }
+ // console.log(menuCategory)
+});
+});
+
+function displayMenuItems(menuItems){
+  let displayMenu = menuItems.map(function(item){ //map the array, map() can modify the array (modify the new data structure)
+    return `<article class="menu-item">
+    <img src=${item.img} class="photo" alt=${item.title}>
+    <div class="item-info">
+      <header>
+        <h4> ${item.title}</h4>
+        <h4 class="price"> ${item.price} </h4>
+      </header>
+      <p class="item-text">${item.desc}</p>
+    </div>
+  </article>`
+  });
+  displayMenu = displayMenu.join('');
+sectionCenter.innerHTML = displayMenu;
+}
+
+// WHAT HAPPENS IF YOU ADD A NEW CATEGORY?
+// get only unique categories
+//iterate over categories return btns
+//make sure to select the btns when they're available.
